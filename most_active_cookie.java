@@ -24,7 +24,7 @@ public class most_active_cookie {
      * @return A hashmap containing the count of each cookie on the specified input date
      * @throws FileNotFoundException
      */
-    private static Map<String, Integer> cookieCount(String fileName, String inputDate) throws FileNotFoundException {
+    public static Map<String, Integer> cookieCount(String fileName, String inputDate) throws FileNotFoundException {
         File f = new File(fileName);
         Scanner sc = new Scanner(f);
         sc.nextLine();
@@ -35,15 +35,15 @@ public class most_active_cookie {
             if(most_active_cookie.getDate(line).equals(inputDate)) {
                 cookieCount.put(most_active_cookie.getCookie(line), cookieCount.getOrDefault(most_active_cookie.getCookie(line), 0) + 1);
             }
-            // Since cookies are sorted in descending fashion, we can break out of loop if a date in the file exceeds the input date
+            // Since cookies are sorted in descending fashion, we do not need to check anymore dates
             else if(most_active_cookie.getDate(line).compareTo(inputDate) < 0) {
-                break;
+                return cookieCount;
             }
         }
         return cookieCount;
     }
 
-    private static int maxCount(Map<String, Integer> map) {
+    public static int maxCount(Map<String, Integer> map) {
         int maxCount = Integer.MIN_VALUE;
         for(Integer val : map.values()) {
             maxCount = Math.max(maxCount, val);
@@ -51,11 +51,17 @@ public class most_active_cookie {
         return maxCount;
     }
 
-    private static String getDate(String line) {
+    public static String getDate(String line) {
+        if(line.length() != 43) {
+            return null;
+        }
         return line.substring(17,27);
     }
 
-    private static String getCookie(String line) {
+    public static String getCookie(String line) {
+        if(line.length() != 43) {
+            return null;
+        }
         return line.substring(0,16);
     }
 }
